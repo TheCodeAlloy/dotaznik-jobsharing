@@ -280,7 +280,7 @@
                         </label>
                     </div>
                     <div style="margin-top: 10px;">
-                        <input type="text" name="q1_2_jine" placeholder="Jiné – uveďte">
+                        <input type="text" name="q1_2_jine" id="q1_2_jine" placeholder="Jiné – uveďte">
                     </div>
                 </div>
             </div>
@@ -463,17 +463,17 @@
 
                 <div class="question">
                     <label class="question-label">5.1 Co považujete za největší přínos sdíleného pracovního místa?</label>
-                    <textarea name="q5_1"></textarea>
+                    <textarea name="q5_1" required></textarea>
                 </div>
 
                 <div class="question">
                     <label class="question-label">5.2 Jaké problémy nebo bariéry jste zaznamenal/a?</label>
-                    <textarea name="q5_2"></textarea>
+                    <textarea name="q5_2" required></textarea>
                 </div>
 
                 <div class="question">
                     <label class="question-label">5.3 Co by bylo možné na nastavení sdíleného místa zlepšit?</label>
-                    <textarea name="q5_3"></textarea>
+                    <textarea name="q5_3" required></textarea>
                 </div>
             </div>
 
@@ -505,7 +505,7 @@
 
                 <div class="question">
                     <label class="question-label">6.2 Za jakých podmínek by pro Vás bylo sdílení dlouhodobě udržitelné?</label>
-                    <textarea name="q6_2"></textarea>
+                    <textarea name="q6_2" required></textarea>
                 </div>
             </div>
 
@@ -523,8 +523,22 @@
 
     <script>
         // DŮLEŽITÉ: Zde vložte URL vašeho Google Apps Script pro dotazník job sharing
-        // Postup: Rozšíření → Apps Script → Nasadit → Nové nasazení → zkopírujte URL .../exec
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfHBNOSzUiZ52BFbxOGUIYkkUz4Bcwv3SWa-dImtFzLcK37Wf2elAPufzI5RSEJNFf/exec';
+
+        // Podmíněná povinnost pro "Jiné" u otázky 1.2
+        const q1_2_radios = document.querySelectorAll('input[name="q1_2"]');
+        const q1_2_jineInput = document.getElementById('q1_2_jine');
+
+        q1_2_radios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'jiné') {
+                    q1_2_jineInput.required = true;
+                } else {
+                    q1_2_jineInput.required = false;
+                    q1_2_jineInput.value = ''; // Vymaže obsah když se vybere jiná možnost
+                }
+            });
+        });
 
         document.getElementById('surveyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
